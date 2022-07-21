@@ -360,22 +360,18 @@ func DefaultGenesisBlock() *Genesis {
 	if !ok {
 		panic("failed to parse big.Int string")
 	}
-	var extra = []byte("Roisupe")
+	var extra = []byte("Wanshi")
 	return &Genesis{
 		Config:     params.MainnetChainConfig,
-		Timestamp:  1657783767,
+		Timestamp:  1658397969,
 		ExtraData:  append(extra, make([]byte, 32-len(extra))...),
 		GasLimit:   params.GenesisGasLimit,
 		Difficulty: big.NewInt(1),
 		Signers: []common.Address{
-			common.HexToAddress("0x719Bca17b72913A418B236663ede8f770c50bC36"),
-			//common.HexToAddress("0xcB2774F9f29424bCcFf8221482CE107B9949046c"),
-			//common.HexToAddress("0x3728f17C4b2935eF10EbEab1be6A7860a4bb3415"),
-			//common.HexToAddress("0x07F46bF9937F82065218521BD45efFB265A8e834"),
-			//common.HexToAddress("0x373FF5a3ce271EE66f17997c1d6aD7eE53c13249"),
+			common.HexToAddress("0xAAE0F083a6c3ebcAe0447e246eA2E919B9aD84A0"),
 		},
 		Voters: []common.Address{
-			common.HexToAddress("0x128A0D92B33eb2F608abC56FED1e964931bF8169"),
+			common.HexToAddress("0x9ac32481ef278848878569e91aF904527EAa9e4B"),
 		},
 		Signer: hexutil.MustDecode("0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"),
 		Alloc:  GenesisAlloc{allocAddr: {Balance: alloc}},
@@ -390,10 +386,10 @@ func DefaultTestnetGenesisBlock() *Genesis {
 	if !ok {
 		panic("failed to parse big.Int string")
 	}
-	var extra = []byte("Roisupe")
+	var extra = []byte("Wanshi")
 	return &Genesis{
 		Config:     params.TestnetChainConfig,
-		Timestamp:  1657594381,
+		Timestamp:  1658397969,
 		ExtraData:  append(extra, make([]byte, 32-len(extra))...),
 		GasLimit:   params.GenesisGasLimit,
 		Difficulty: big.NewInt(1),

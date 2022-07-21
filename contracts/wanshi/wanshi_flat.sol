@@ -1157,7 +1157,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     ) internal virtual {}
 }
 
-// File: contracts/NFTs/roisupe.sol
+// File: contracts/NFTs/wanshi.sol
 
 
 
@@ -1166,7 +1166,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 
 
-contract Roisupe is ERC721, Ownable {
+contract Wanshi is ERC721, Ownable {
   using Strings for uint256;
   using Counters for Counters.Counter;
 
