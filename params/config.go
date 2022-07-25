@@ -32,8 +32,8 @@ var (
 )
 
 const (
-	MainnetChainID = 1080
-	TestnetChainID = 1180
+	MainnetChainID = 980
+	TestnetChainID = 981
 )
 
 
