@@ -23,7 +23,7 @@ import "github.com/ethereum/go-ethereum/common"
 var MainnetBootnodes = []string{
 	// Wanshi mainnet Bootnodes
 	"enode://09f8e13869dbb4171700b4a3f45ed8ff2a1aa4205ce18512b9f26d85f7c0e195ca7a52e2225f8de4166d2c208e9b905f53262c0c02961d95edb06216b302d8a1@146.190.36.212:30303",   // bootnode-aws-ap-southeast-1-001
-	"enode://ee37720d3fe79c6fa153a893ba53f4550cefe6a7b25b2c5a389c77e673c588b6bb4b79b8596f34716db705ad0bfe5117418cc385a489eac8b5dd8146b7dcf917@127.0.0.1:30305",     // bootnode-aws-us-east-1-001
+	"enode://0010958b9e070cc56cc640a522e0f24faae50815f53ea2c4119db0460606bf04f39be1a7ed5fd2de47c99774c891ecf01d66a9ecb1c3fc81f8de105d8af6f6f0@164.92.68.57:30303",     // bootnode-aws-us-east-1-001
 	"enode://cfa84b723e63a954db4b2b91b03556ca58264a33f7646020b5c1fff974c7057d5d8f6f7accfdadfff611cf39a0d72110baaa31749c8ebb0e9dd7ed3fc6f3a8a3@127.0.0.1:30306",     // bootnode-aws-us-east-1-001
 	"enode://96c3b589a2d2a052c481586fdb509ca80baa60cddcd37f82f2b193fe272907681f1feadad18436b07c322f3488a13bc1c7b0a44d1e7fb7cfdebe780ea7a7a150@127.0.0.1:30307",     // bootnode-aws-us-east-1-001
 }
