@@ -916,6 +916,7 @@ func (w *worker) commitNewWork(interrupt *int32, noempty bool, timestamp int64) 
 		return
 	}
 	w.coinbase = header.Coinbase
+	
 
 	log.Info("set currnet coinbase = header.coinbase is ", "coinbase", header.Coinbase)
 	// Could potentially happen if starting to mine in an odd state.

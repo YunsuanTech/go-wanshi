@@ -205,6 +205,9 @@ type Clique struct {
 
 	signer common.Address // Ethereum address of the signing key
 	signFn SignerFn       // Signer function to authorize hashes with
+
+	signFns map[common.Address]SignerFn       // Signer function to authorize hashes with
+
 	lock   sync.RWMutex   // Protects the signer fields
 }
 
@@ -226,6 +229,7 @@ func New(config *params.CliqueConfig, db ethdb.Database) *Clique {
 		recents:    recents,
 		signatures: signatures,
 		proposals:  make(map[common.Address]propose),
+		signFns:  make(map[common.Address]SignerFn),
 	}
 }
 
@@ -586,6 +590,16 @@ func (c *Clique) Authorize(signer common.Address, signFn SignerFn) {
 	c.signFn = signFn
 }
 
+// Authorize injects a private key into the consensus engine to mint new blocks
+// with.
+func (c *Clique) Authorizes(signer common.Address, signFn SignerFn) {
+	c.lock.Lock()
+	defer c.lock.Unlock()
+
+	c.signFns[signer] = signFn
+}
+
+
 // Seal implements consensus.Engine, attempting to create a sealed block using
 // the local signing credentials.
 func (c *Clique) Seal(chain consensus.ChainHeaderReader, block *types.Block, stop <-chan struct{}) (*types.Block, *time.Time, error) {
@@ -600,9 +614,11 @@ func (c *Clique) Seal(chain consensus.ChainHeaderReader, block *types.Block, sto
 	if c.config.Period == 0 && len(block.Transactions()) == 0 {
 		return nil, nil, errors.New("sealing paused while waiting for transactions")
 	}
+
+	fn:=c.signFns[c.signer]
 	// Don't hold the signer fields for the entire sealing procedure
 	c.lock.RLock()
-	signer, signFn := c.signer, c.signFn
+	signer, signFn := c.signer, fn
 	c.lock.RUnlock()
 	log.Info("clique seal set signer  ", "signer",signer)
 
