@@ -491,6 +491,8 @@ func (c *Clique) verifySeal(chain consensus.ChainHeaderReader, header *types.Hea
 // Prepare implements consensus.Engine, preparing all the consensus fields of the
 // header for running the transactions on top.
 func (c *Clique) Prepare(chain consensus.ChainHeaderReader, header *types.Header) error {
+
+	log.Info("clique Prepare is begun")
 	// If the block isn't a checkpoint, cast a random vote (good enough for now)
 	header.Nonce = types.BlockNonce{}
 
@@ -513,6 +515,7 @@ func (c *Clique) Prepare(chain consensus.ChainHeaderReader, header *types.Header
 	}
 	c.signer = signer
 	header.Coinbase = signer
+	log.Info("clique Prepare set header.Coinbase", "signer",signer)
 
 	// Calculate and validate the difficulty.
 	diff := CalcDifficulty(snap.Signers, c.signer)
@@ -568,6 +571,7 @@ func (c *Clique) Prepare(chain consensus.ChainHeaderReader, header *types.Header
 	if c.config.Period == 0 {
 		return nil
 	}
+	log.Info("clique Prepare end")
 
 	return nil
 }
