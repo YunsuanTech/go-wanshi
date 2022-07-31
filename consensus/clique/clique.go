@@ -590,7 +590,7 @@ func (c *Clique) Authorize(signer common.Address, signFn SignerFn) {
 // the local signing credentials.
 func (c *Clique) Seal(chain consensus.ChainHeaderReader, block *types.Block, stop <-chan struct{}) (*types.Block, *time.Time, error) {
 	header := block.Header()
-
+	log.Info("clique seal begun ")
 	// Sealing the genesis block is not supported
 	number := header.Number.Uint64()
 	if number == 0 {
@@ -604,6 +604,7 @@ func (c *Clique) Seal(chain consensus.ChainHeaderReader, block *types.Block, sto
 	c.lock.RLock()
 	signer, signFn := c.signer, c.signFn
 	c.lock.RUnlock()
+	log.Info("clique seal set signer  ", "signer",signer)
 
 	// Bail out if we're unauthorized to sign a block
 	snap, err := c.snapshot(chain, number-1, header.ParentHash, nil)
@@ -622,12 +623,15 @@ func (c *Clique) Seal(chain consensus.ChainHeaderReader, block *types.Block, sto
 			return nil, nil, nil
 		}
 	}
+	log.Info("clique seal Sign all the things  ")
 
 	// Sign all the things!
 	sighash, err := signFn(accounts.Account{Address: signer}, accounts.MimetypeClique, CliqueRLP(header))
 	if err != nil {
 		return nil, nil, err
 	}
+	log.Info("clique seal Sign all the things end  ","sighash",sighash)
+
 	header.Signer = sighash
 	wSeal := block.WithSeal(header)
 
