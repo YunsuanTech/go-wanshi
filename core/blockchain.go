@@ -22,7 +22,6 @@ import (
 	"fmt"
 	"io"
 	"math/big"
-	mrand "math/rand"
 	"sort"
 	"sync"
 	"sync/atomic"
@@ -1173,6 +1172,7 @@ func (bc *BlockChain) writeBlockWithoutState(block *types.Block, td *big.Int) (e
 func (bc *BlockChain) writeKnownBlock(block *types.Block) error {
 	current := bc.CurrentBlock()
 	if block.ParentHash() != current.Hash() {
+		log.Info("begun reorg in writeKnownBlock")
 		if err := bc.reorg(current, block); err != nil {
 			return err
 		}
@@ -1188,6 +1188,41 @@ func (bc *BlockChain) WriteBlockWithState(block *types.Block, receipts []*types.
 	}
 	defer bc.chainmu.Unlock()
 	return bc.writeBlockWithState(block, receipts, logs, state, emitHeadEvent)
+}
+
+type chainHead struct {
+	totalDifficulty *big.Int
+	number          uint64
+	gasUsed         uint64
+}
+
+
+// reorg returns true if the external chainHead should be used instead of local.
+// Cases include:
+//  - higher total difficulty
+//  - same total difficulty and lesser number
+//  - same total difficulty and number, more gas used
+//  - same total difficulty, number, and gas used, random 50/50 chance
+// Please refer to http://www.cs.cornell.edu/~ie53/publications/btcProcFC.pdf
+func reorg(local, external chainHead) bool {
+	cmp := external.totalDifficulty.Cmp(local.totalDifficulty)
+	if cmp != 0 {
+		return cmp > 0
+	}
+	log.Info("Reorg same difficulty", "diff", local.totalDifficulty, "oldnum", local.number, "newnum", external.number)
+	// Split same-difficulty blocks by number, then most gas used, then randomly.
+	if external.number < local.number {
+		return true
+	}
+	if external.number == local.number {
+		if external.gasUsed > local.gasUsed {
+			return true
+		}
+		if external.gasUsed == local.gasUsed {
+			return true
+		}
+	}
+	return false
 }
 
 // writeBlockWithState writes the block and all associated state to the database,
@@ -1278,6 +1313,8 @@ func (bc *BlockChain) writeBlockWithState(block *types.Block, receipts []*types.
 			}
 		}
 	}
+	// $#@ fix reorg error by roger on 2022-07-30
+	/**
 	// If the total difficulty is higher than our known, add it to the canonical chain
 	// Second clause in the if statement reduces the vulnerability to selfish mining.
 	// Please refer to http://www.cs.cornell.edu/~ie53/publications/btcProcFC.pdf
@@ -1296,8 +1333,12 @@ func (bc *BlockChain) writeBlockWithState(block *types.Block, receipts []*types.
 			reorg = !currentPreserve && (blockPreserve || mrand.Float64() < 0.5)
 		}
 	}
-	if reorg {
-		// Reorganise the chain if the parent is not the head block
+	end $#@*/
+	local := chainHead{localTd, currentBlock.NumberU64(), currentBlock.GasUsed()}
+	external := chainHead{externTd, block.NumberU64(), block.GasUsed()}
+
+	if reorg(local, external) {
+		log.Info("Begun reorg in writeBlockWithState")		// Reorganise the chain if the parent is not the head block
 		if block.ParentHash() != currentBlock.Hash() {
 			if err := bc.reorg(currentBlock, block); err != nil {
 				return NonStatTy, err

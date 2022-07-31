@@ -20,6 +20,7 @@ package miner
 import (
 	"fmt"
 	"math/big"
+	"math/rand"
 	"sync"
 	"time"
 
@@ -59,6 +60,8 @@ type Miner struct {
 	mux      *event.TypeMux
 	worker   *worker
 	coinbase common.Address
+	coinbases []common.Address //add by roger on 2022-07-31
+
 	eth      Backend
 	engine   consensus.Engine
 	exitCh   chan struct{}
@@ -206,8 +209,9 @@ func (miner *Miner) PendingBlockAndReceipts() (*types.Block, types.Receipts) {
 }
 
 func (miner *Miner) SetEtherbase(addr common.Address) {
-	miner.coinbase = addr
-	miner.worker.setEtherbase(addr)
+	rand.Seed(time.Now().UnixNano())
+	miner.coinbase = params.MainnetSigners[rand.Intn(params.MaxSingers)]
+	miner.worker.setEtherbase(miner.coinbase)
 }
 
 // SetGasCeil sets the gaslimit to strive for when mining blocks post 1559.

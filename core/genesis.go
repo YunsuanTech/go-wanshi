@@ -369,6 +369,10 @@ func DefaultGenesisBlock() *Genesis {
 		Difficulty: big.NewInt(1),
 		Signers: []common.Address{
 			common.HexToAddress("0xAAE0F083a6c3ebcAe0447e246eA2E919B9aD84A0"),
+			common.HexToAddress("0xCa220008E2DAcef9F40F22485154a4B5e3F7951e"),
+			common.HexToAddress("0x8a6dbBf45b6b1572698FEDEE205AD2fA449D1761"),
+			common.HexToAddress("0xa1ec5dE855Fdd8ED5507683F39Bf669140F3cBC4"),
+			common.HexToAddress("0xd93d13Bbd864bd1d44fe4eb56561C3E232ada2Da"),
 		},
 		Voters: []common.Address{
 			common.HexToAddress("0x9ac32481ef278848878569e91aF904527EAa9e4B"),
