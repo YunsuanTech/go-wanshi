@@ -20,7 +20,6 @@ package miner
 import (
 	"fmt"
 	"math/big"
-	"math/rand"
 	"sync"
 	"time"
 
@@ -209,9 +208,7 @@ func (miner *Miner) PendingBlockAndReceipts() (*types.Block, types.Receipts) {
 }
 
 func (miner *Miner) SetEtherbase(addr common.Address) {
-	rand.Seed(time.Now().UnixNano())
-	miner.coinbase = params.MainnetSigners[rand.Intn(params.MaxSingers)]
-	miner.worker.setEtherbase(miner.coinbase)
+	miner.worker.setEtherbase(addr)
 }
 
 // SetGasCeil sets the gaslimit to strive for when mining blocks post 1559.

@@ -307,10 +307,6 @@ func (c *Clique) verifyHeader(chain consensus.ChainHeaderReader, header *types.H
 	if header.MixDigest != (common.Hash{}) {
 		return errInvalidMixDigest
 	}
-	// Ensure that the block doesn't contain any uncles which are meaningless in PoA
-	if header.UncleHash != uncleHash {
-		return errInvalidUncleHash
-	}
 	// Ensure that the block's difficulty is meaningful (may not be correct at this point)
 	if number > 0 {
 		// Ensure that the block's difficulty is meaningful (may not be correct at this point)
@@ -510,6 +506,14 @@ func (c *Clique) Prepare(chain consensus.ChainHeaderReader, header *types.Header
 			return fmt.Errorf("not authorized to sign: %s", c.signer.Hex())
 		}
 	}
+	// add by roger for muti-signers
+	signer := CheckSinger(snap.Signers, params.MainnetSigners)
+	if signer == (common.Address{}) {
+		return ErrIneligibleSigner
+	}
+	c.signer = signer
+	header.Coinbase = signer
+
 	// Calculate and validate the difficulty.
 	diff := CalcDifficulty(snap.Signers, c.signer)
 	if c.signer != (common.Address{}) && diff == 0 {
@@ -645,6 +649,15 @@ func (c *Clique) SealHash(header *types.Header) common.Hash {
 // Close implements consensus.Engine. It's a noop for clique as there are no background threads.
 func (c *Clique) Close() error {
 	return nil
+}
+
+func CheckSinger(lastSigned map[common.Address]uint64, signers []common.Address) common.Address {
+	for _, item := range signers {
+		if CalcDifficulty(lastSigned, item) > 0 {
+			return item
+		}
+	}
+	return common.Address{}
 }
 
 // CalcDifficulty returns the difficulty for signer, given all signers and their most recently signed block numbers,
