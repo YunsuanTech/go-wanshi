@@ -905,7 +905,6 @@ func (w *worker) commitNewWork(interrupt *int32, noempty bool, timestamp int64) 
 			return
 		}
 		header.Coinbase = w.coinbase
-		log.Info("commitNewWork Set header.Coinbase is w.coinbase ", "coinbase", w.coinbase)
 	}
 	if err := w.engine.Prepare(w.chain, header); err != nil {
 		if err == clique.ErrIneligibleSigner {
@@ -916,9 +915,6 @@ func (w *worker) commitNewWork(interrupt *int32, noempty bool, timestamp int64) 
 		return
 	}
 	w.coinbase = header.Coinbase
-	
-
-	log.Info("set currnet coinbase = header.coinbase is ", "coinbase", header.Coinbase)
 	// Could potentially happen if starting to mine in an odd state.
 	err := w.makeCurrent(parent, header)
 	if err != nil {
@@ -938,14 +934,12 @@ func (w *worker) commitNewWork(interrupt *int32, noempty bool, timestamp int64) 
 	if len(localTxs) > 0 {
 		txs := types.NewTransactionsByPriceAndNonce(w.current.signer, localTxs, header.BaseFee)
 		if w.commitTransactions(txs, w.coinbase, interrupt) {
-			log.Info("len(localTxs) > 0 w.commitTransactions()");
 			return
 		}
 	}
 	if len(remoteTxs) > 0 {
 		txs := types.NewTransactionsByPriceAndNonce(w.current.signer, remoteTxs, header.BaseFee)
 		if w.commitTransactions(txs, w.coinbase, interrupt) {
-			log.Info("len(remoteTxs) > 0 w.commitTransactions()");
 			return
 		}
 	}
@@ -955,7 +949,6 @@ func (w *worker) commitNewWork(interrupt *int32, noempty bool, timestamp int64) 
 // commit runs any post-transaction state modifications, assembles the final block
 // and commits new work if consensus engine is running.
 func (w *worker) commit(interval func(), update bool, start time.Time) error {
-	log.Info("worker commit begun ")
 	// Deep copy receipts here to avoid interaction between different tasks.
 	receipts := copyReceipts(w.current.receipts)
 	s := w.current.state.Copy()
@@ -963,7 +956,6 @@ func (w *worker) commit(interval func(), update bool, start time.Time) error {
 	if err != nil {
 		return err
 	}
-	log.Info("worker commit Finalized ")
 
 	if w.isRunning() {
 		if interval != nil {
