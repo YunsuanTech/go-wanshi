@@ -360,7 +360,7 @@ func DefaultGenesisBlock() *Genesis {
 	if !ok {
 		panic("failed to parse big.Int string")
 	}
-	var extra = []byte("Wanshi")
+	var extra = []byte("Tiangong")
 	return &Genesis{
 		Config:     params.MainnetChainConfig,
 		Timestamp:  1658397969,
@@ -390,7 +390,7 @@ func DefaultTestnetGenesisBlock() *Genesis {
 	if !ok {
 		panic("failed to parse big.Int string")
 	}
-	var extra = []byte("Wanshi")
+	var extra = []byte("Tiangong")
 	return &Genesis{
 		Config:     params.TestnetChainConfig,
 		Timestamp:  1658397969,

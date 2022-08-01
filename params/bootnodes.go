@@ -21,7 +21,7 @@ import "github.com/ethereum/go-ethereum/common"
 // MainnetBootnodes are the enode URLs of the P2P bootstrap nodes running on
 // the main Ethereum network.
 var MainnetBootnodes = []string{
-	// Wanshi mainnet Bootnodes
+	// TianGong mainnet Bootnodes
 	"enode://0bc234f5565e5d7d447c6ce9f0694f477f59b1ab93d6410fe1c18d096f491213491cf2981d3f711bc4a13320134dfe510a5c3a743897206467196959dcb87a99@146.190.36.212:30303",   // bootnode-aws-ap-southeast-1-001
 	"enode://64764e94cc94ea753388ef3a6d29e6f7b662ab5f81043dd2ff6e338d1290a257d67b48d6d61913a7a4abda0b4af6fb5c17d0fd2926fc177efcc8547885c3e2a8@164.92.68.57:30303",     // bootnode-aws-us-east-1-001
 	"enode://cfa84b723e63a954db4b2b91b03556ca58264a33f7646020b5c1fff974c7057d5d8f6f7accfdadfff611cf39a0d72110baaa31749c8ebb0e9dd7ed3fc6f3a8a3@127.0.0.1:30306",     // bootnode-aws-us-east-1-001
@@ -29,7 +29,7 @@ var MainnetBootnodes = []string{
 }
 
 // RopstenBootnodes are the enode URLs of the P2P bootstrap nodes running on the
-// Ropsten test network.
+// TianGong test network.
 var TestnetBootnodes = []string{
 	"enode://30b7ab30a01c124a6cceca36863ece12c4f5fa68e3ba9b0b51407ccc002eeed3b3102d20a88f1c1d3c3154e2449317b8ef95090e77b312d5cc39354f86d5d606@52.176.7.10:30303",    // US-Azure geth
 	"enode://865a63255b3bb68023b6bffd5095118fcc13e79dcf014fe4e47e065c350c7cc72af2e53eff895f11ba1bbb6a2b33271c1116ee870f266618eadfc2e78aa7349c@52.176.100.77:30303",  // US-Azure parity
