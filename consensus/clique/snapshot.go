@@ -19,7 +19,6 @@ package clique
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethdb"
@@ -215,15 +214,6 @@ func (s *Snapshot) apply(headers []*types.Header) (*Snapshot, error) {
 		signer, err := ecrecover(header, s.sigcache)
 		if err != nil {
 			return nil, err
-		}
-		lastBlockSigned, authorized := snap.Signers[signer]
-		if !authorized {
-			return nil, fmt.Errorf("%s not authorized to sign", signer.Hex())
-		}
-		if lastBlockSigned > 0 {
-			if next := snap.nextSignableBlockNumber(lastBlockSigned); number < next {
-				return nil, fmt.Errorf("%s not authorized to sign %d: signed recently %d, next eligible signature %d", signer.Hex(), number, lastBlockSigned, next)
-			}
 		}
 		snap.Signers[signer] = number
 
