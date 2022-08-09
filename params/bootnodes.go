@@ -22,9 +22,9 @@ import "github.com/ethereum/go-ethereum/common"
 // the main Ethereum network.
 var MainnetBootnodes = []string{
 	// TianGong mainnet Bootnodes
-	"enode://64f0b82bb13c43c03b689138d960000f7d5f672a1707e1787d1a12dfcd227c846a9284d4d55652c806071a618e7edfec53e885c77dbf0632c391defa3e5c7b30@146.190.36.212:30303",   // bootnode-aws-ap-southeast-1-001
-	"enode://98da3d3618ded13d46ea6351bfc0e5863b9562bc9a40e9331690c8c612c4e79fdb127ba615a0c384c09c8423c0a7188627eea92fcea515b2c84efcf91a4f27e1@159.223.95.159:30303",     // bootnode-aws-us-east-1-001
-	"enode://cfa84b723e63a954db4b2b91b03556ca58264a33f7646020b5c1fff974c7057d5d8f6f7accfdadfff611cf39a0d72110baaa31749c8ebb0e9dd7ed3fc6f3a8a3@127.0.0.1:30306",     // bootnode-aws-us-east-1-001
+	"enode://36b47b6360538272c0d4b2b8f9422b798fb016019bfd7e2d6c10494b2a4262ad3c393ba9bdba8457acdf275508d19a2a5835564cb5e51089b5215e092aec3ca2@146.190.36.212:30303",   // bootnode-aws-ap-southeast-1-001
+	"enode://816b0399ba0f129128bbe91b3a7eea04c232fee3a8ac269a986ad4a0080d9b43f99273f0d50ea93b6758299cc8aaa89d30f885710eb23c702505dc4a1570549c@139.59.229.170:30303",     // bootnode-aws-us-east-1-001
+	"enode://cf0ba9b571d795cd0e10cd6c37879ec9ecf6437e5d132df45476c3bc5e594c7a2e85e27f09b011ec840d96c7dd370129cf9cad964e46558fdb5c27f50dc909b4@164.92.68.57:30303",     // bootnode-aws-us-east-1-001
 	"enode://96c3b589a2d2a052c481586fdb509ca80baa60cddcd37f82f2b193fe272907681f1feadad18436b07c322f3488a13bc1c7b0a44d1e7fb7cfdebe780ea7a7a150@127.0.0.1:30307",     // bootnode-aws-us-east-1-001
 }
 
