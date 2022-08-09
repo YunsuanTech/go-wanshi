@@ -484,7 +484,7 @@ func (c *Clique) verifySeal(chain consensus.ChainHeaderReader, header *types.Hea
 		return errInvalidCheckpointSigners
 	}
 
-	if header.Difficulty.Uint64() != CalcDifficulty(snap.Signers, header.ParentHash) {
+	if header.Difficulty.Uint64() != CalcDifficulty(signer, header.ParentHash) {
 		return errInvalidDifficulty
 	}
 
@@ -512,7 +512,7 @@ func (c *Clique) Prepare(chain consensus.ChainHeaderReader, header *types.Header
 	c.signer = signer
 	header.Coinbase = signer
 	// Calculate and validate the difficulty.
-	diff := CalcDifficulty(snap.Signers, header.ParentHash)
+	diff := CalcDifficulty(signer, header.ParentHash)
 
 	if c.signer != (common.Address{}) && diff == 0 {
 		return ErrIneligibleSigner
@@ -671,22 +671,15 @@ func CheckSinger(lastSigned map[common.Address]uint64, parent common.Hash) commo
 // Difficulty for ineligible signers (too recent) is always 0. For eligible signers, difficulty is defined as 1 plus the
 // number of lower priority signers, with more recent signers have lower priority. If multiple signers have not yet
 // signed (0), then addresses which lexicographically sort later have lower priority.
-func CalcDifficulty(lastSigned map[common.Address]uint64, parent common.Hash) uint64 {
+func CalcDifficulty(signer common.Address, parent common.Hash) uint64 {
 
-	var diff uint64 = 0
-	for _, add := range params.MainnetSigners {
-		hash := make([]byte, 8)
-		hash = append(hash, []byte(add.Bytes())...)
-		hash = append(hash, parent.Bytes()...)
+	hash := make([]byte, 8)
+	hash = append(hash, []byte(signer.Bytes())...)
+	hash = append(hash, parent.Bytes()...)
 
-		weight := uint64(binary.LittleEndian.Uint32(crypto.Keccak256(hash)))
-		lastSigned[add] = weight
-		if diff < weight {
-			diff = weight
-		}
-	}
+	weight := uint64(binary.LittleEndian.Uint32(crypto.Keccak256(hash)))
 	// [n/2+1,n]
-	return uint64(diff)
+	return uint64(weight)
 }
 
 // APIs implements consensus.Engine, returning the user facing RPC API to allow
