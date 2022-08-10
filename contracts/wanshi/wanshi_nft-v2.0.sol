@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract CryptoAssets is Ownable{
 
-    string public standard = 'RoiCryptoAssets';
+    string public standard = 'TGCryptoAssets';
     string public name;
     string public symbol;
     uint256 public maxSupply;
@@ -31,8 +31,8 @@ contract CryptoAssets is Ownable{
     constructor() payable {
         // balanceOf[msg.sender] = initialSupply;              // Give the creator all initial tokens
         maxSupply = 10000;                        // Update total supply
-        name = "ROISUPE";                               // Set the name for display purposes
-        symbol = "ROIS";                               // Set the symbol for display purposes
+        name = "TGNFT";                               // Set the name for display purposes
+        symbol = "TGC";                               // Set the symbol for display purposes
     }
 
     function setInitialOwners(address[] memory addresses, uint256[] memory indices) public {
