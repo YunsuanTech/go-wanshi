@@ -699,9 +699,11 @@ func (pool *TxPool) add(tx *types.Transaction, local bool) (replaced bool, err e
 	}
 
 	from, _ := types.Sender(pool.signer, tx)
-	log.Info("pool.add debug info","from",from, "tx.to",*tx.To())
-	if pool.miners.contains(from) && !pool.approves.contains(*tx.To()) {
-		return false, ErrUnApproveTx
+	if tx.To() !=nil {
+		log.Info("pool.add debug info", "from", from, "tx.to", *tx.To())
+		if pool.miners.contains(from) && !pool.approves.contains(*tx.To()) {
+			return false, ErrUnApproveTx
+		}
 	}
 
 	// Make the local flag. If it's from local source or it's from the network but
